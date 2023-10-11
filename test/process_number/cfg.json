@@ -1,0 +1,348 @@
+{
+  "nodes" : [
+    {
+      "id" : 6745,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "position.col = column_number"
+    },
+    {
+      "id" : 6750,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->type = TOKEN_NUMBER"
+    },
+    {
+      "id" : 6755,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->value = 0"
+    },
+    {
+      "id" : 6746,
+      "label" : "CALL",
+      "name" : "<operator>.fieldAccess",
+      "code" : "position.col"
+    },
+    {
+      "id" : 6751,
+      "label" : "CALL",
+      "name" : "<operator>.indirectFieldAccess",
+      "code" : "token->type"
+    },
+    {
+      "id" : 6756,
+      "label" : "CALL",
+      "name" : "<operator>.indirectFieldAccess",
+      "code" : "token->value"
+    },
+    {
+      "id" : 6761,
+      "label" : "CALL",
+      "name" : "isdigit",
+      "code" : "isdigit(ch)"
+    },
+    {
+      "id" : 6748,
+      "label" : "FIELD_IDENTIFIER",
+      "name" : "<empty>",
+      "code" : "col"
+    },
+    {
+      "id" : 6753,
+      "label" : "FIELD_IDENTIFIER",
+      "name" : "<empty>",
+      "code" : "type"
+    },
+    {
+      "id" : 6758,
+      "label" : "FIELD_IDENTIFIER",
+      "name" : "<empty>",
+      "code" : "value"
+    },
+    {
+      "id" : 6764,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "digit = ch - '0'"
+    },
+    {
+      "id" : 6766,
+      "label" : "CALL",
+      "name" : "<operator>.subtraction",
+      "code" : "ch - '0'"
+    },
+    {
+      "id" : 6770,
+      "label" : "CALL",
+      "name" : "<operator>.lessEqualsThan",
+      "code" : "token->value <= ((INT_MAX - digit)/10)"
+    },
+    {
+      "id" : 6771,
+      "label" : "CALL",
+      "name" : "<operator>.indirectFieldAccess",
+      "code" : "token->value"
+    },
+    {
+      "id" : 6774,
+      "label" : "CALL",
+      "name" : "<operator>.division",
+      "code" : "(INT_MAX - digit)/10"
+    },
+    {
+      "id" : 6780,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->value = token->value*10 + digit"
+    },
+    {
+      "id" : 6791,
+      "label" : "CALL",
+      "name" : "next_char",
+      "code" : "next_char()"
+    },
+    {
+      "id" : 6773,
+      "label" : "FIELD_IDENTIFIER",
+      "name" : "<empty>",
+      "code" : "value"
+    },
+    {
+      "id" : 6775,
+      "label" : "CALL",
+      "name" : "<operator>.subtraction",
+      "code" : "INT_MAX - digit"
+    },
+    {
+      "id" : 6781,
+      "label" : "CALL",
+      "name" : "<operator>.indirectFieldAccess",
+      "code" : "token->value"
+    },
+    {
+      "id" : 6784,
+      "label" : "CALL",
+      "name" : "<operator>.addition",
+      "code" : "token->value*10 + digit"
+    },
+    {
+      "id" : 6794,
+      "label" : "CALL",
+      "name" : "leprintf",
+      "code" : "leprintf(\"number too large\")"
+    },
+    {
+      "id" : 6783,
+      "label" : "FIELD_IDENTIFIER",
+      "name" : "<empty>",
+      "code" : "value"
+    },
+    {
+      "id" : 6785,
+      "label" : "CALL",
+      "name" : "<operator>.multiplication",
+      "code" : "token->value*10"
+    },
+    {
+      "id" : 6786,
+      "label" : "CALL",
+      "name" : "<operator>.indirectFieldAccess",
+      "code" : "token->value"
+    },
+    {
+      "id" : 6788,
+      "label" : "FIELD_IDENTIFIER",
+      "name" : "<empty>",
+      "code" : "value"
+    },
+    {
+      "id" : 6741,
+      "label" : "METHOD",
+      "name" : "process_number",
+      "code" : "void process_number (Token*)"
+    },
+    {
+      "id" : 6796,
+      "label" : "METHOD_RETURN",
+      "name" : "<empty>",
+      "code" : "RET"
+    }
+  ],
+  "edges" : [
+    {
+      "src" : 6745,
+      "dst" : 6753,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6750,
+      "dst" : 6758,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6755,
+      "dst" : 6761,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6746,
+      "dst" : 6745,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6751,
+      "dst" : 6750,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6756,
+      "dst" : 6755,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6761,
+      "dst" : 6796,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6761,
+      "dst" : 6766,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6748,
+      "dst" : 6746,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6753,
+      "dst" : 6751,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6758,
+      "dst" : 6756,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6764,
+      "dst" : 6773,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6766,
+      "dst" : 6764,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6770,
+      "dst" : 6783,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6770,
+      "dst" : 6794,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6771,
+      "dst" : 6775,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6774,
+      "dst" : 6770,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6780,
+      "dst" : 6791,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6791,
+      "dst" : 6761,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6773,
+      "dst" : 6771,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6775,
+      "dst" : 6774,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6781,
+      "dst" : 6788,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6784,
+      "dst" : 6780,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6794,
+      "dst" : 6761,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6783,
+      "dst" : 6781,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6785,
+      "dst" : 6784,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6786,
+      "dst" : 6785,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6788,
+      "dst" : 6786,
+      "value" : "",
+      "label" : "CFG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6748,
+      "value" : "",
+      "label" : "CFG"
+    }
+  ]
+}

@@ -1,0 +1,504 @@
+{
+  "nodes" : [
+    {
+      "id" : 6741,
+      "label" : "METHOD",
+      "name" : "process_number",
+      "code" : "void process_number (Token*)"
+    },
+    {
+      "id" : 6796,
+      "label" : "METHOD_RETURN",
+      "name" : "<empty>",
+      "code" : "RET"
+    },
+    {
+      "id" : 6742,
+      "label" : "METHOD_PARAMETER_IN",
+      "name" : "token",
+      "code" : "Token *token"
+    },
+    {
+      "id" : 6745,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "position.col = column_number"
+    },
+    {
+      "id" : 6750,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->type = TOKEN_NUMBER"
+    },
+    {
+      "id" : 6755,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->value = 0"
+    },
+    {
+      "id" : 6745,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "position.col = column_number"
+    },
+    {
+      "id" : 6745,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "position.col = column_number"
+    },
+    {
+      "id" : 6750,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->type = TOKEN_NUMBER"
+    },
+    {
+      "id" : 6750,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->type = TOKEN_NUMBER"
+    },
+    {
+      "id" : 6755,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->value = 0"
+    },
+    {
+      "id" : 6755,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->value = 0"
+    },
+    {
+      "id" : 6761,
+      "label" : "CALL",
+      "name" : "isdigit",
+      "code" : "isdigit(ch)"
+    },
+    {
+      "id" : 6761,
+      "label" : "CALL",
+      "name" : "isdigit",
+      "code" : "isdigit(ch)"
+    },
+    {
+      "id" : 6764,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "digit = ch - '0'"
+    },
+    {
+      "id" : 6764,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "digit = ch - '0'"
+    },
+    {
+      "id" : 6764,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "digit = ch - '0'"
+    },
+    {
+      "id" : 6770,
+      "label" : "CALL",
+      "name" : "<operator>.lessEqualsThan",
+      "code" : "token->value <= ((INT_MAX - digit)/10)"
+    },
+    {
+      "id" : 6766,
+      "label" : "CALL",
+      "name" : "<operator>.subtraction",
+      "code" : "ch - '0'"
+    },
+    {
+      "id" : 6766,
+      "label" : "CALL",
+      "name" : "<operator>.subtraction",
+      "code" : "ch - '0'"
+    },
+    {
+      "id" : 6770,
+      "label" : "CALL",
+      "name" : "<operator>.lessEqualsThan",
+      "code" : "token->value <= ((INT_MAX - digit)/10)"
+    },
+    {
+      "id" : 6770,
+      "label" : "CALL",
+      "name" : "<operator>.lessEqualsThan",
+      "code" : "token->value <= ((INT_MAX - digit)/10)"
+    },
+    {
+      "id" : 6780,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->value = token->value*10 + digit"
+    },
+    {
+      "id" : 6791,
+      "label" : "CALL",
+      "name" : "next_char",
+      "code" : "next_char()"
+    },
+    {
+      "id" : 6774,
+      "label" : "CALL",
+      "name" : "<operator>.division",
+      "code" : "(INT_MAX - digit)/10"
+    },
+    {
+      "id" : 6774,
+      "label" : "CALL",
+      "name" : "<operator>.division",
+      "code" : "(INT_MAX - digit)/10"
+    },
+    {
+      "id" : 6780,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->value = token->value*10 + digit"
+    },
+    {
+      "id" : 6780,
+      "label" : "CALL",
+      "name" : "<operator>.assignment",
+      "code" : "token->value = token->value*10 + digit"
+    },
+    {
+      "id" : 6794,
+      "label" : "CALL",
+      "name" : "leprintf",
+      "code" : "leprintf(\"number too large\")"
+    },
+    {
+      "id" : 6775,
+      "label" : "CALL",
+      "name" : "<operator>.subtraction",
+      "code" : "INT_MAX - digit"
+    },
+    {
+      "id" : 6775,
+      "label" : "CALL",
+      "name" : "<operator>.subtraction",
+      "code" : "INT_MAX - digit"
+    },
+    {
+      "id" : 6784,
+      "label" : "CALL",
+      "name" : "<operator>.addition",
+      "code" : "token->value*10 + digit"
+    },
+    {
+      "id" : 6784,
+      "label" : "CALL",
+      "name" : "<operator>.addition",
+      "code" : "token->value*10 + digit"
+    },
+    {
+      "id" : 6794,
+      "label" : "CALL",
+      "name" : "leprintf",
+      "code" : "leprintf(\"number too large\")"
+    },
+    {
+      "id" : 6785,
+      "label" : "CALL",
+      "name" : "<operator>.multiplication",
+      "code" : "token->value*10"
+    },
+    {
+      "id" : 6785,
+      "label" : "CALL",
+      "name" : "<operator>.multiplication",
+      "code" : "token->value*10"
+    }
+  ],
+  "edges" : [
+    {
+      "src" : 6742,
+      "dst" : 6796,
+      "value" : "token",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6745,
+      "dst" : 6796,
+      "value" : "position.col",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6745,
+      "dst" : 6796,
+      "value" : "position.col = column_number",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6750,
+      "dst" : 6796,
+      "value" : "token->type",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6750,
+      "dst" : 6796,
+      "value" : "token->type = TOKEN_NUMBER",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6755,
+      "dst" : 6796,
+      "value" : "token->value",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6755,
+      "dst" : 6796,
+      "value" : "token->value = 0",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6761,
+      "dst" : 6796,
+      "value" : "ch",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6761,
+      "dst" : 6796,
+      "value" : "isdigit(ch)",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6794,
+      "dst" : 6796,
+      "value" : "leprintf(\"number too large\")",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6791,
+      "dst" : 6796,
+      "value" : "next_char()",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6745,
+      "dst" : 6796,
+      "value" : "column_number",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6775,
+      "dst" : 6796,
+      "value" : "INT_MAX",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6750,
+      "dst" : 6796,
+      "value" : "TOKEN_NUMBER",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6742,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6745,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6750,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6755,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6766,
+      "dst" : 6761,
+      "value" : "ch",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6761,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6766,
+      "dst" : 6764,
+      "value" : "ch",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6766,
+      "dst" : 6764,
+      "value" : "'0'",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6761,
+      "dst" : 6766,
+      "value" : "ch",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6766,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6742,
+      "dst" : 6770,
+      "value" : "token",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6755,
+      "dst" : 6770,
+      "value" : "token->value",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6780,
+      "dst" : 6770,
+      "value" : "token->value",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6774,
+      "dst" : 6770,
+      "value" : "INT_MAX - digit",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6774,
+      "dst" : 6770,
+      "value" : "10",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6785,
+      "dst" : 6780,
+      "value" : "token->value",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6785,
+      "dst" : 6780,
+      "value" : "10",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6775,
+      "dst" : 6780,
+      "value" : "digit",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6780,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6791,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6775,
+      "dst" : 6774,
+      "value" : "INT_MAX",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6775,
+      "dst" : 6774,
+      "value" : "digit",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6774,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6775,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6764,
+      "dst" : 6775,
+      "value" : "digit",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6785,
+      "dst" : 6784,
+      "value" : "token->value",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6785,
+      "dst" : 6784,
+      "value" : "10",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6775,
+      "dst" : 6784,
+      "value" : "digit",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6784,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6794,
+      "value" : "",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6742,
+      "dst" : 6785,
+      "value" : "token",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6770,
+      "dst" : 6785,
+      "value" : "token->value",
+      "label" : "DDG"
+    },
+    {
+      "src" : 6741,
+      "dst" : 6785,
+      "value" : "",
+      "label" : "DDG"
+    }
+  ]
+}
