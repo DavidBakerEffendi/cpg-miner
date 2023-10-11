@@ -1,8 +1,0 @@
-0000000000000000000000000000000000000000 8933b2dab97143213a78a5ba6b1cfe37cf5553a2 David Baker Effendi <dbe@sun.ac.za> 1692523621 +0200	clone: from github.com:DavidBakerEffendi/cpg-method-miner.git
-8933b2dab97143213a78a5ba6b1cfe37cf5553a2 3eca80afea6cd5b75f27383e52301c2416e399c3 David Baker Effendi <dbe@sun.ac.za> 1692605380 +0200	commit: Initial Commit & Debut of CPG Miner
-3eca80afea6cd5b75f27383e52301c2416e399c3 2eba9182e125215c247b93f4cecccc8694b143c9 David Baker Effendi <dbe@sun.ac.za> 1692616948 +0200	pull: Fast-forward
-2eba9182e125215c247b93f4cecccc8694b143c9 11682cd271e9ca1a8452d5c492495427e0d8639e David Baker Effendi <dbe@sun.ac.za> 1692620485 +0200	pull: Fast-forward
-11682cd271e9ca1a8452d5c492495427e0d8639e 62a8465bc91758264fbee64cec80e5906c56d67d David Baker Effendi <dbe@sun.ac.za> 1693207795 +0200	commit: Push `cpg_miner` shortcut
-62a8465bc91758264fbee64cec80e5906c56d67d 7216ab52ad15f397ebd827e9960f161585cef30f David Baker Effendi <dbe@sun.ac.za> 1693764568 +0200	pull: Fast-forward
-7216ab52ad15f397ebd827e9960f161585cef30f f25d50d3edcf4dd0c707719beabebc51c6ea0587 David Baker Effendi <dbe@sun.ac.za> 1693807703 +0200	pull: Fast-forward
-f25d50d3edcf4dd0c707719beabebc51c6ea0587 f25d50d3edcf4dd0c707719beabebc51c6ea0587 David Baker Effendi <dbe@sun.ac.za> 1697025928 +0200	Branch: renamed refs/heads/master to refs/heads/main
