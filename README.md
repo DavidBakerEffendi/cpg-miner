@@ -18,17 +18,25 @@ sbt stage
 Generate a CPG using Joern, e.g. `joern-parse <input_dir> -o <output_cpg>`. Use this `<output_cpg>` as the input for
 `cpg-miner`.
 
+Alternatively, you can use `./cpg_miner from-code <input_dir>` and it will generate a CPG for you to ingest. This will 
+be created at `<input_dir>/cpg.bin`.
+
 ```
 Mines code snippets and sub-graphs from CPGs.
-Usage: cpg_miner [options] input-cpg
+Usage: cpg_miner [from-graph|from-code] [options] <args>...
 
   --help
-  input-cpg                The input cpg to mine from.
   -o, --output-dir <value>
                            The output directory to dump the mined artifacts.
   -m, --method-name <value>
                            The name of the target procedure to mine.
   -c, --show-callees       Attempts to resolve and dump the methods called by the target method. Default is false.
+Command: from-graph input-cpg
+
+  input-cpg                The input cpg to mine from.
+Command: from-code input-dir
+
+  input-dir                The input directory to generate a CPG from
 ```
 
 **Note**: The `<output-dir>` is not cleaned before run, but existing results will be overwritten during successive runs.

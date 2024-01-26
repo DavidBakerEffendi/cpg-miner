@@ -2,9 +2,9 @@ name                     := "cpg_miner"
 ThisBuild / organization := "za.ac.sun"
 ThisBuild / scalaVersion := "3.3.0"
 
-val cpgVersion        = "1.4.16"
-val joernVersion      = "2.0.59"
-val overflowdbVersion = "1.180"
+val cpgVersion        = "1.4.34"
+val joernVersion      = "2.0.239"
+val overflowdbVersion = "1.182"
 
 lazy val schema         = Projects.schema
 lazy val domainClasses  = Projects.domainClasses
@@ -15,31 +15,27 @@ dependsOn(domainClasses)
 libraryDependencies ++= Seq(
   "com.github.pathikrit"    %% "better-files"      % "3.9.2",
   "com.github.scopt"        %% "scopt"             % "4.1.0",
-  "org.apache.logging.log4j" % "log4j-slf4j2-impl" % "2.20.0"       % Optional,
+  "org.apache.logging.log4j" % "log4j-slf4j2-impl" % "2.20.0" % Optional,
   "io.joern"                %% "x2cpg"             % Versions.joern,
   "io.joern"                %% "joern-cli"         % Versions.joern,
+  "io.joern"                %% "javasrc2cpg"       % Versions.joern,
   "io.joern"                %% "semanticcpg"       % Versions.joern,
   "io.joern"                %% "dataflowengineoss" % Versions.joern,
-  "io.joern"                %% "semanticcpg"       % Versions.joern % Test classifier "tests",
-  "org.scalatest"           %% "scalatest"         % "3.2.15"       % Test
+  "org.scalatest"           %% "scalatest"         % "3.2.15" % Test
 )
 
 // mostly so that `sbt assembly` works, but also to ensure that we don't end up
 // with unexpected shadowing in jar hell
-// example:we forked javaparser-core and use it (transitively) under the `io.joern` namespace...
 excludeDependencies ++= Seq(
-  ExclusionRule("com.github.javaparser", "javaparser-core"),
-  ExclusionRule("org.jline", "jline-reader"),
-  ExclusionRule("org.jline", "jline-terminal"),
-  ExclusionRule("org.jline", "jline-terminal-jna"),
-  ExclusionRule("io.shiftleft", "codepropertygraph-domain-classes_2.13")
+  ExclusionRule("io.shiftleft", "codepropertygraph-domain-classes_3"),
 )
 
 assembly / assemblyMergeStrategy := {
-  case "log4j2.xml"                                    => MergeStrategy.first
-  case "module-info.class"                             => MergeStrategy.first
-  case "META-INF/versions/9/module-info.class"         => MergeStrategy.first
+  case "log4j2.xml" => MergeStrategy.first
+  case "module-info.class" => MergeStrategy.first
+  case "META-INF/versions/9/module-info.class" => MergeStrategy.first
   case "io/github/retronym/java9rtexport/Export.class" => MergeStrategy.first
+  case PathList("scala", "collection", "internal", "pprint", _) => MergeStrategy.first
   case x =>
     val oldStrategy = (ThisBuild / assemblyMergeStrategy).value
     oldStrategy(x)

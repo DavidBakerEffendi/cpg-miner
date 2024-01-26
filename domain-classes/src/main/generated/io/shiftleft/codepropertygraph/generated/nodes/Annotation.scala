@@ -126,6 +126,10 @@ class Annotation(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/
   def _annotationParameterAssignViaAstIn: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     get()._annotationParameterAssignViaAstIn
 
+  /** Traverse to IDENTIFIER via AST IN edge.
+    */
+  def _identifierViaAstIn: overflowdb.traversal.Traversal[Identifier] = get()._identifierViaAstIn
+
   /** Traverse to LITERAL via AST IN edge.
     */
   def _literalViaAstIn: overflowdb.traversal.Traversal[Literal] = get()._literalViaAstIn
@@ -142,9 +146,17 @@ class Annotation(graph_4762: Graph, id_4762: Long /*cf https://github.com/scala/
     */
   def _methodParameterInViaAstIn: overflowdb.traversal.Traversal[MethodParameterIn] = get()._methodParameterInViaAstIn
 
+  /** Traverse to METHOD_REF via AST IN edge.
+    */
+  def _methodRefViaAstIn: overflowdb.traversal.Traversal[MethodRef] = get()._methodRefViaAstIn
+
   /** Traverse to TYPE_DECL via AST IN edge.
     */
   def _typeDeclViaAstIn: overflowdb.traversal.Traversal[TypeDecl] = get()._typeDeclViaAstIn
+
+  /** Traverse to UNKNOWN via AST IN edge.
+    */
+  def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown] = get()._unknownViaAstIn
 
   def cfgIn: Iterator[CfgNode] = get().cfgIn
   override def _cfgIn          = get()._cfgIn
@@ -263,12 +275,15 @@ class AnnotationDb(ref: NodeRef[NodeDb]) extends NodeDb(ref) with StoredNode wit
   override def _astIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](2)
   def _annotationParameterAssignViaAstIn: overflowdb.traversal.Traversal[AnnotationParameterAssign] =
     astIn.collectAll[AnnotationParameterAssign]
-  def _literalViaAstIn: overflowdb.traversal.Traversal[Literal] = astIn.collectAll[Literal]
-  def _memberViaAstIn: overflowdb.traversal.Traversal[Member]   = astIn.collectAll[Member]
-  def _methodViaAstIn: overflowdb.traversal.Traversal[Method]   = astIn.collectAll[Method]
+  def _identifierViaAstIn: overflowdb.traversal.Traversal[Identifier] = astIn.collectAll[Identifier]
+  def _literalViaAstIn: overflowdb.traversal.Traversal[Literal]       = astIn.collectAll[Literal]
+  def _memberViaAstIn: overflowdb.traversal.Traversal[Member]         = astIn.collectAll[Member]
+  def _methodViaAstIn: overflowdb.traversal.Traversal[Method]         = astIn.collectAll[Method]
   def _methodParameterInViaAstIn: overflowdb.traversal.Traversal[MethodParameterIn] =
     astIn.collectAll[MethodParameterIn]
-  def _typeDeclViaAstIn: overflowdb.traversal.Traversal[TypeDecl] = astIn.collectAll[TypeDecl]
+  def _methodRefViaAstIn: overflowdb.traversal.Traversal[MethodRef] = astIn.collectAll[MethodRef]
+  def _typeDeclViaAstIn: overflowdb.traversal.Traversal[TypeDecl]   = astIn.collectAll[TypeDecl]
+  def _unknownViaAstIn: overflowdb.traversal.Traversal[Unknown]     = astIn.collectAll[Unknown]
 
   def cfgIn: Iterator[CfgNode] = createAdjacentNodeScalaIteratorByOffSet[CfgNode](3)
   override def _cfgIn          = createAdjacentNodeScalaIteratorByOffSet[StoredNode](3)

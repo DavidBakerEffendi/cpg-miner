@@ -9602,7 +9602,7 @@ object NewClosureBinding {
 
   private val outNeighbors: Map[String, Set[String]] = Map("REF" -> Set("LOCAL", "METHOD_PARAMETER_IN"))
   private val inNeighbors: Map[String, Set[String]] =
-    Map("CAPTURE" -> Set("METHOD_REF", "TYPE_REF"), "CAPTURED_BY" -> Set("LOCAL"))
+    Map("CAPTURE" -> Set("METHOD_REF", "TYPE_REF"), "CAPTURED_BY" -> Set("LOCAL", "METHOD_PARAMETER_IN"))
 
 }
 
@@ -15127,6 +15127,7 @@ class NewFile extends NewNode with FileBase with AstNodeNew {
   var name: String                  = "<empty>"
   var lineNumber: Option[Integer]   = None
   var hash: Option[String]          = None
+  var content: String               = "<empty>"
   var columnNumber: Option[Integer] = None
   var code: String                  = "<empty>"
 
@@ -15136,6 +15137,7 @@ class NewFile extends NewNode with FileBase with AstNodeNew {
     val newInstance = new NewFile
     newInstance.code = this.code
     newInstance.columnNumber = this.columnNumber
+    newInstance.content = this.content
     newInstance.hash = this.hash
     newInstance.lineNumber = this.lineNumber
     newInstance.name = this.name
@@ -15154,6 +15156,11 @@ class NewFile extends NewNode with FileBase with AstNodeNew {
   }
 
   def columnNumber(value: Option[Integer]): this.type = columnNumber(value.orNull)
+
+  def content(value: String): this.type = {
+    this.content = value
+    this
+  }
 
   def hash(value: String): this.type = {
     this.hash = Option(value)
@@ -15183,6 +15190,7 @@ class NewFile extends NewNode with FileBase with AstNodeNew {
     var res = Map[String, Any]()
     if (!(("<empty>") == code)) { res += "CODE" -> code }
     columnNumber.map { value => res += "COLUMN_NUMBER" -> value }
+    if (!(("<empty>") == content)) { res += "CONTENT" -> content }
     hash.map { value => res += "HASH" -> value }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
@@ -15204,8 +15212,9 @@ class NewFile extends NewNode with FileBase with AstNodeNew {
       case 1 => this.name
       case 2 => this.lineNumber
       case 3 => this.hash
-      case 4 => this.columnNumber
-      case 5 => this.code
+      case 4 => this.content
+      case 5 => this.columnNumber
+      case 6 => this.code
       case _ => null
     }
 
@@ -15215,13 +15224,14 @@ class NewFile extends NewNode with FileBase with AstNodeNew {
       case 1 => "name"
       case 2 => "lineNumber"
       case 3 => "hash"
-      case 4 => "columnNumber"
-      case 5 => "code"
+      case 4 => "content"
+      case 5 => "columnNumber"
+      case 6 => "code"
       case _ => ""
     }
 
   override def productPrefix = "NewFile"
-  override def productArity  = 6
+  override def productArity  = 7
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewFile]
 }
@@ -24984,11 +24994,15 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
   var dynamicTypeHintFullName: IndexedSeq[String] = collection.immutable.ArraySeq.empty
   var columnNumber: Option[Integer]               = None
   var code: String                                = "<empty>"
+  var astParentType: String                       = "<empty>"
+  var astParentFullName: String                   = "<empty>"
 
   override def label: String = "MEMBER"
 
   override def copy: this.type = {
     val newInstance = new NewMember
+    newInstance.astParentFullName = this.astParentFullName
+    newInstance.astParentType = this.astParentType
     newInstance.code = this.code
     newInstance.columnNumber = this.columnNumber
     newInstance.dynamicTypeHintFullName = this.dynamicTypeHintFullName
@@ -24998,6 +25012,16 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
     newInstance.possibleTypes = this.possibleTypes
     newInstance.typeFullName = this.typeFullName
     newInstance.asInstanceOf[this.type]
+  }
+
+  def astParentFullName(value: String): this.type = {
+    this.astParentFullName = value
+    this
+  }
+
+  def astParentType(value: String): this.type = {
+    this.astParentType = value
+    this
   }
 
   def code(value: String): this.type = {
@@ -25046,6 +25070,8 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
 
   override def properties: Map[String, Any] = {
     var res = Map[String, Any]()
+    if (!(("<empty>") == astParentFullName)) { res += "AST_PARENT_FULL_NAME" -> astParentFullName }
+    if (!(("<empty>") == astParentType)) { res += "AST_PARENT_TYPE" -> astParentType }
     if (!(("<empty>") == code)) { res += "CODE" -> code }
     columnNumber.map { value => res += "COLUMN_NUMBER" -> value }
     if (dynamicTypeHintFullName != null && dynamicTypeHintFullName.nonEmpty) {
@@ -25077,6 +25103,8 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
       case 5 => this.dynamicTypeHintFullName
       case 6 => this.columnNumber
       case 7 => this.code
+      case 8 => this.astParentType
+      case 9 => this.astParentFullName
       case _ => null
     }
 
@@ -25090,11 +25118,13 @@ class NewMember extends NewNode with MemberBase with AstNodeNew with Declaration
       case 5 => "dynamicTypeHintFullName"
       case 6 => "columnNumber"
       case 7 => "code"
+      case 8 => "astParentType"
+      case 9 => "astParentFullName"
       case _ => ""
     }
 
   override def productPrefix = "NewMember"
-  override def productArity  = 8
+  override def productArity  = 10
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMember]
 }
@@ -26443,6 +26473,8 @@ class NewMethod extends NewNode with MethodBase with AstNodeNew with CfgNodeNew 
 
   var signature: String                = ""
   var order: scala.Int                 = -1: Int
+  var offsetEnd: Option[Integer]       = None
+  var offset: Option[Integer]          = None
   var name: String                     = "<empty>"
   var lineNumberEnd: Option[Integer]   = None
   var lineNumber: Option[Integer]      = None
@@ -26472,6 +26504,8 @@ class NewMethod extends NewNode with MethodBase with AstNodeNew with CfgNodeNew 
     newInstance.lineNumber = this.lineNumber
     newInstance.lineNumberEnd = this.lineNumberEnd
     newInstance.name = this.name
+    newInstance.offset = this.offset
+    newInstance.offsetEnd = this.offsetEnd
     newInstance.order = this.order
     newInstance.signature = this.signature
     newInstance.asInstanceOf[this.type]
@@ -26547,6 +26581,20 @@ class NewMethod extends NewNode with MethodBase with AstNodeNew with CfgNodeNew 
     this
   }
 
+  def offset(value: Integer): this.type = {
+    this.offset = Option(value)
+    this
+  }
+
+  def offset(value: Option[Integer]): this.type = offset(value.orNull)
+
+  def offsetEnd(value: Integer): this.type = {
+    this.offsetEnd = Option(value)
+    this
+  }
+
+  def offsetEnd(value: Option[Integer]): this.type = offsetEnd(value.orNull)
+
   def order(value: scala.Int): this.type = {
     this.order = value
     this
@@ -26571,6 +26619,8 @@ class NewMethod extends NewNode with MethodBase with AstNodeNew with CfgNodeNew 
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     lineNumberEnd.map { value => res += "LINE_NUMBER_END" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
+    offset.map { value => res += "OFFSET" -> value }
+    offsetEnd.map { value => res += "OFFSET_END" -> value }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
     if (!(("") == signature)) { res += "SIGNATURE" -> signature }
     res
@@ -26588,18 +26638,20 @@ class NewMethod extends NewNode with MethodBase with AstNodeNew with CfgNodeNew 
     n match {
       case 0  => this.signature
       case 1  => this.order
-      case 2  => this.name
-      case 3  => this.lineNumberEnd
-      case 4  => this.lineNumber
-      case 5  => this.isExternal
-      case 6  => this.hash
-      case 7  => this.fullName
-      case 8  => this.filename
-      case 9  => this.columnNumberEnd
-      case 10 => this.columnNumber
-      case 11 => this.code
-      case 12 => this.astParentType
-      case 13 => this.astParentFullName
+      case 2  => this.offsetEnd
+      case 3  => this.offset
+      case 4  => this.name
+      case 5  => this.lineNumberEnd
+      case 6  => this.lineNumber
+      case 7  => this.isExternal
+      case 8  => this.hash
+      case 9  => this.fullName
+      case 10 => this.filename
+      case 11 => this.columnNumberEnd
+      case 12 => this.columnNumber
+      case 13 => this.code
+      case 14 => this.astParentType
+      case 15 => this.astParentFullName
       case _  => null
     }
 
@@ -26607,23 +26659,25 @@ class NewMethod extends NewNode with MethodBase with AstNodeNew with CfgNodeNew 
     n match {
       case 0  => "signature"
       case 1  => "order"
-      case 2  => "name"
-      case 3  => "lineNumberEnd"
-      case 4  => "lineNumber"
-      case 5  => "isExternal"
-      case 6  => "hash"
-      case 7  => "fullName"
-      case 8  => "filename"
-      case 9  => "columnNumberEnd"
-      case 10 => "columnNumber"
-      case 11 => "code"
-      case 12 => "astParentType"
-      case 13 => "astParentFullName"
+      case 2  => "offsetEnd"
+      case 3  => "offset"
+      case 4  => "name"
+      case 5  => "lineNumberEnd"
+      case 6  => "lineNumber"
+      case 7  => "isExternal"
+      case 8  => "hash"
+      case 9  => "fullName"
+      case 10 => "filename"
+      case 11 => "columnNumberEnd"
+      case 12 => "columnNumber"
+      case 13 => "code"
+      case 14 => "astParentType"
+      case 15 => "astParentFullName"
       case _  => ""
     }
 
   override def productPrefix = "NewMethod"
-  override def productArity  = 14
+  override def productArity  = 16
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMethod]
 }
@@ -27886,11 +27940,13 @@ class NewMethodParameterIn
   var dynamicTypeHintFullName: IndexedSeq[String] = collection.immutable.ArraySeq.empty
   var columnNumber: Option[Integer]               = None
   var code: String                                = "<empty>"
+  var closureBindingId: Option[String]            = None
 
   override def label: String = "METHOD_PARAMETER_IN"
 
   override def copy: this.type = {
     val newInstance = new NewMethodParameterIn
+    newInstance.closureBindingId = this.closureBindingId
     newInstance.code = this.code
     newInstance.columnNumber = this.columnNumber
     newInstance.dynamicTypeHintFullName = this.dynamicTypeHintFullName
@@ -27904,6 +27960,13 @@ class NewMethodParameterIn
     newInstance.typeFullName = this.typeFullName
     newInstance.asInstanceOf[this.type]
   }
+
+  def closureBindingId(value: String): this.type = {
+    this.closureBindingId = Option(value)
+    this
+  }
+
+  def closureBindingId(value: Option[String]): this.type = closureBindingId(value.orNull)
 
   def code(value: String): this.type = {
     this.code = value
@@ -27966,6 +28029,7 @@ class NewMethodParameterIn
 
   override def properties: Map[String, Any] = {
     var res = Map[String, Any]()
+    closureBindingId.map { value => res += "CLOSURE_BINDING_ID" -> value }
     if (!(("<empty>") == code)) { res += "CODE" -> code }
     columnNumber.map { value => res += "COLUMN_NUMBER" -> value }
     if (dynamicTypeHintFullName != null && dynamicTypeHintFullName.nonEmpty) {
@@ -28003,6 +28067,7 @@ class NewMethodParameterIn
       case 8  => this.dynamicTypeHintFullName
       case 9  => this.columnNumber
       case 10 => this.code
+      case 11 => this.closureBindingId
       case _  => null
     }
 
@@ -28019,11 +28084,12 @@ class NewMethodParameterIn
       case 8  => "dynamicTypeHintFullName"
       case 9  => "columnNumber"
       case 10 => "code"
+      case 11 => "closureBindingId"
       case _  => ""
     }
 
   override def productPrefix = "NewMethodParameterIn"
-  override def productArity  = 11
+  override def productArity  = 12
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewMethodParameterIn]
 }
@@ -37605,6 +37671,7 @@ object NewTag {
       "RETURN",
       "TAG",
       "TEMPLATE_DOM",
+      "TYPE_DECL",
       "TYPE_REF",
       "UNKNOWN"
     )
@@ -41759,6 +41826,8 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
   type StoredType = TypeDecl
 
   var order: scala.Int                             = -1: Int
+  var offsetEnd: Option[Integer]                   = None
+  var offset: Option[Integer]                      = None
   var name: String                                 = "<empty>"
   var lineNumber: Option[Integer]                  = None
   var isExternal: Boolean                          = false
@@ -41786,6 +41855,8 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     newInstance.isExternal = this.isExternal
     newInstance.lineNumber = this.lineNumber
     newInstance.name = this.name
+    newInstance.offset = this.offset
+    newInstance.offsetEnd = this.offsetEnd
     newInstance.order = this.order
     newInstance.asInstanceOf[this.type]
   }
@@ -41851,6 +41922,20 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     this
   }
 
+  def offset(value: Integer): this.type = {
+    this.offset = Option(value)
+    this
+  }
+
+  def offset(value: Option[Integer]): this.type = offset(value.orNull)
+
+  def offsetEnd(value: Integer): this.type = {
+    this.offsetEnd = Option(value)
+    this
+  }
+
+  def offsetEnd(value: Option[Integer]): this.type = offsetEnd(value.orNull)
+
   def order(value: scala.Int): this.type = {
     this.order = value
     this
@@ -41871,6 +41956,8 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
     if (!((false) == isExternal)) { res += "IS_EXTERNAL" -> isExternal }
     lineNumber.map { value => res += "LINE_NUMBER" -> value }
     if (!(("<empty>") == name)) { res += "NAME" -> name }
+    offset.map { value => res += "OFFSET" -> value }
+    offsetEnd.map { value => res += "OFFSET_END" -> value }
     if (!((-1: Int) == order)) { res += "ORDER" -> order }
     res
   }
@@ -41886,39 +41973,43 @@ class NewTypeDecl extends NewNode with TypeDeclBase with AstNodeNew {
   override def productElement(n: Int): Any =
     n match {
       case 0  => this.order
-      case 1  => this.name
-      case 2  => this.lineNumber
-      case 3  => this.isExternal
-      case 4  => this.inheritsFromTypeFullName
-      case 5  => this.fullName
-      case 6  => this.filename
-      case 7  => this.columnNumber
-      case 8  => this.code
-      case 9  => this.astParentType
-      case 10 => this.astParentFullName
-      case 11 => this.aliasTypeFullName
+      case 1  => this.offsetEnd
+      case 2  => this.offset
+      case 3  => this.name
+      case 4  => this.lineNumber
+      case 5  => this.isExternal
+      case 6  => this.inheritsFromTypeFullName
+      case 7  => this.fullName
+      case 8  => this.filename
+      case 9  => this.columnNumber
+      case 10 => this.code
+      case 11 => this.astParentType
+      case 12 => this.astParentFullName
+      case 13 => this.aliasTypeFullName
       case _  => null
     }
 
   override def productElementName(n: Int): String =
     n match {
       case 0  => "order"
-      case 1  => "name"
-      case 2  => "lineNumber"
-      case 3  => "isExternal"
-      case 4  => "inheritsFromTypeFullName"
-      case 5  => "fullName"
-      case 6  => "filename"
-      case 7  => "columnNumber"
-      case 8  => "code"
-      case 9  => "astParentType"
-      case 10 => "astParentFullName"
-      case 11 => "aliasTypeFullName"
+      case 1  => "offsetEnd"
+      case 2  => "offset"
+      case 3  => "name"
+      case 4  => "lineNumber"
+      case 5  => "isExternal"
+      case 6  => "inheritsFromTypeFullName"
+      case 7  => "fullName"
+      case 8  => "filename"
+      case 9  => "columnNumber"
+      case 10 => "code"
+      case 11 => "astParentType"
+      case 12 => "astParentFullName"
+      case 13 => "aliasTypeFullName"
       case _  => ""
     }
 
   override def productPrefix = "NewTypeDecl"
-  override def productArity  = 12
+  override def productArity  = 14
 
   override def canEqual(that: Any): Boolean = that != null && that.isInstanceOf[NewTypeDecl]
 }

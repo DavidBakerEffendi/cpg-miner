@@ -4,7 +4,7 @@ import better.files.File
 import io.circe.syntax.EncoderOps
 import io.circe.{Encoder, Json}
 import io.joern.dataflowengineoss.dotgenerator.DdgGenerator
-import io.shiftleft.codepropertygraph.generated.nodes.{Call, Method, ControlStructure}
+import io.shiftleft.codepropertygraph.generated.nodes.{Call, ControlStructure, Method}
 import io.shiftleft.codepropertygraph.generated.{Cpg, Languages, PropertyNames}
 import io.shiftleft.semanticcpg.codedumper.CodeDumper
 import io.shiftleft.semanticcpg.dotgenerator.DotSerializer.{Edge, Graph}
@@ -24,21 +24,35 @@ object CpgMethodMiner {
       cpg.metaData.language.headOption match
         case Some(language) => logger.info(s"CPG generated from a $language project")
         case None           => logger.warn("Could not determine the programming language of the CPG.")
-      val matchingMethods = cpg.method
-        .where(_.block.astChildren) // Avoid methods without implementations
-        .nameExact(config.methodName)
-        .l
+
+      val matchingMethods = config.methodName match {
+        case Some(methodName) =>
+          logger.info(s"Matching procedures with the name $methodName")
+          cpg.method
+            .where(
+              _.and(
+                _.block.astChildren, // Avoid methods without implementations
+                _.not(_.isExternal)
+              )
+            )
+            .nameExact(methodName)
+            .l
+        case None =>
+          logger.info(s"Processing all procedures")
+          cpg.method.isExternal(false).l
+      }
+
       if (matchingMethods.isEmpty) {
-        logger.warn(s"No methods with the name '${config.methodName}' found.")
+        logger.warn(s"No methods matched.")
       } else if (matchingMethods.size == 1) {
-        logger.info(s"Found method with the name '${config.methodName}'.")
+        logger.info(s"Found a matching method.")
         matchingMethods.foreach { m =>
           val subdir = (config.outputDir / s"${m.name}").createDirectories()
           dumpMethodCode(cpg, m, subdir, config.showCallees)
           serializeGraph(m, subdir)
         }
       } else {
-        logger.info(s"Found ${matchingMethods.size} method(s) with the name '${config.methodName}'.")
+        logger.info(s"Found ${matchingMethods.size} matching methods.")
         matchingMethods.zipWithIndex.foreach { case (m, idx) =>
           val subdir = (config.outputDir / s"${m.name}_$idx").createDirectories()
           dumpMethodCode(cpg, m, subdir, config.showCallees)
@@ -142,6 +156,6 @@ object CpgMethodMiner {
 case class CpgMinerConfig(
   inputCpg: File = File("."),
   outputDir: File = File("."),
-  methodName: String = "",
+  methodName: Option[String] = None,
   showCallees: Boolean = false
 )
