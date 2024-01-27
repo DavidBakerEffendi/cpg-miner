@@ -4,8 +4,9 @@ import better.files.File
 import io.circe.syntax.EncoderOps
 import io.circe.{Encoder, Json}
 import io.joern.dataflowengineoss.dotgenerator.DdgGenerator
-import io.shiftleft.codepropertygraph.generated.nodes.{Call, ControlStructure, Method}
-import io.shiftleft.codepropertygraph.generated.{Cpg, Languages, PropertyNames}
+import io.shiftleft.codepropertygraph.generated.nodes.{Call, ControlStructure, Method, StoredNode}
+import io.shiftleft.codepropertygraph.generated.{Cpg, EdgeTypes, Languages, PropertyNames}
+import io.joern.x2cpg.utils.ConcurrentTaskUtil
 import io.shiftleft.semanticcpg.codedumper.CodeDumper
 import io.shiftleft.semanticcpg.dotgenerator.DotSerializer.{Edge, Graph}
 import io.shiftleft.semanticcpg.dotgenerator.{AstGenerator, CdgGenerator, CfgGenerator}
@@ -42,22 +43,71 @@ object CpgMethodMiner {
           cpg.method.isExternal(false).l
       }
 
-      if (matchingMethods.isEmpty) {
-        logger.warn(s"No methods matched.")
-      } else if (matchingMethods.size == 1) {
-        logger.info(s"Found a matching method.")
-        matchingMethods.foreach { m =>
-          val subdir = (config.outputDir / s"${m.name}").createDirectories()
-          dumpMethodCode(cpg, m, subdir, config.showCallees)
-          serializeGraph(m, subdir)
+      if (config.combine) mineWholeGraph(cpg, config)
+      else matchAndMineMethods(cpg, matchingMethods, config)
+    }
+  }
+
+  private def mineWholeGraph(cpg: Cpg, config: CpgMinerConfig): Unit = {
+    val combinedGraph = {
+      val astGen = new AstGenerator()
+      val cfgGen = new CfgGenerator()
+      val ddgGen = new DdgGenerator()
+      val cdgGen = new CdgGenerator()
+      // Break everything up into tasks
+      val tasks = cpg.typeDecl.map { typeDecl => () =>
+        {
+          val ast = astGen.generate(typeDecl)
+          val cfgAndDdg = typeDecl.method
+            .map { method =>
+              val cfg = cfgGen.generate(method)
+              val ddg = ddgGen.generate(method)
+              val cdg = cdgGen.generate(method)
+              cfg ++ ddg ++ cdg
+            }
+            .reduceOption((a, b) => a ++ b)
+            .getOrElse(Graph(List.empty, List.empty))
+          ast ++ cfgAndDdg
         }
-      } else {
-        logger.info(s"Found ${matchingMethods.size} matching methods.")
-        matchingMethods.zipWithIndex.foreach { case (m, idx) =>
-          val subdir = (config.outputDir / s"${m.name}_$idx").createDirectories()
-          dumpMethodCode(cpg, m, subdir, config.showCallees)
-          serializeGraph(m, subdir)
-        }
+      }
+      // Execute concurrently, using a fixed number of threads at any given time to keep memory under control
+      ConcurrentTaskUtil
+        .runUsingThreadPool(tasks)
+        .flatMap(_.toOption)
+        .reduceOption((a, b) => a ++ b)
+        .getOrElse(Graph(List.empty, List.empty))
+    }
+
+    val interproceduralTypeEdges = (cpg.typeDecl.inE ++ cpg.typeDecl.outE ++ cpg.graph.edges(EdgeTypes.CALL))
+      .map(e =>
+        Edge(
+          e.outNode().get().asInstanceOf[StoredNode],
+          e.inNode().get().asInstanceOf[StoredNode],
+          edgeType = e.label()
+        )
+      )
+      .l
+    val cpgGraph = combinedGraph ++ Graph(List.empty, interproceduralTypeEdges)
+
+    config.outputDir / s"cpg.json" write graphToJson(cpgGraph)
+  }
+
+  private def matchAndMineMethods(cpg: Cpg, matchingMethods: List[Method], config: CpgMinerConfig): Unit = {
+    if (matchingMethods.isEmpty) {
+      logger.warn(s"No methods matched.")
+    } else if (matchingMethods.size == 1) {
+      logger.info(s"Found a matching method.")
+      matchingMethods.foreach { m =>
+        val subdir = (config.outputDir / s"${m.name}").createDirectories()
+        dumpMethodCode(cpg, m, subdir, config.showCallees)
+        serializeGraph(m, subdir)
+      }
+    } else {
+      logger.info(s"Found ${matchingMethods.size} matching methods.")
+      matchingMethods.zipWithIndex.foreach { case (m, idx) =>
+        val subdir = (config.outputDir / s"${m.name}_$idx").createDirectories()
+        dumpMethodCode(cpg, m, subdir, config.showCallees)
+        serializeGraph(m, subdir)
       }
     }
   }
@@ -157,5 +207,6 @@ case class CpgMinerConfig(
   inputCpg: File = File("."),
   outputDir: File = File("."),
   methodName: Option[String] = None,
+  combine: Boolean = false,
   showCallees: Boolean = false
 )

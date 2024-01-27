@@ -29,14 +29,16 @@ Usage: cpg_miner [from-graph|from-code] [options] <args>...
   -o, --output-dir <value>
                            The output directory to dump the mined artifacts.
   -m, --method-name <value>
-                           The name of the target procedure to mine.
+                           The name of the target procedure to mine. If undefined, matches all methods.
   -c, --show-callees       Attempts to resolve and dump the methods called by the target method. Default is false.
+  --combine                Combines all representations and methods into a single JSON CPG. Note this will exclude the code snippet.
 Command: from-graph input-cpg
 
   input-cpg                The input cpg to mine from.
 Command: from-code input-dir
 
   input-dir                The input directory to generate a CPG from
+
 ```
 
 **Note**: The `<output-dir>` is not cleaned before run, but existing results will be overwritten during successive runs.

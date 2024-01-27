@@ -22,6 +22,9 @@ object Main {
       .action((x, c) => c.copy(methodName = Option(x)))
     showCallees()
       .action((_, c) => c.copy(showCallees = true))
+    opt[Unit]("combine")
+      .text("Combines all representations and methods into a single JSON CPG. Note this will exclude the code snippet.")
+      .action((_, c) => c.copy(combine = true))
     cmd("from-graph")
       .children(
         inCpg()
